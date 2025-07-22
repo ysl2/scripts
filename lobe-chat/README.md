@@ -21,6 +21,11 @@ Branch: main
 Commit: efb9311e6f3c
 ```
 
+| container ports      | 3210  | 8000  | 9000  | 9001  | 5432  |
+| -------------------- | ----- | ----- | ----- | ----- | ----- |
+| inner machine ports  | 37004 | 37005 | 37006 | 37007 | 37008 |
+| public machine ports | 38004 | 38005 | 38006 | -     | -     |
+
 ```bash
 pwd
 # /Users/yusongli/Documents
@@ -28,15 +33,20 @@ pwd
 git clone git@github.com:ysl2/lobe-chat.git
 cd lobe-chat/docker-compose/local
 bash setup.sh
-# Select the second option: Port mode
+# Select the second option: Port mode, enter the public ip like `47.xxx.xxx.227`.
 
 autossh -M 37004 -NfR 47.xxx.xxx.227:38004:localhost:36004 -p 36000 yusongli@47.xxx.xxx.227
 autossh -M 37005 -NfR 47.xxx.xxx.227:38005:localhost:36005 -p 36000 yusongli@47.xxx.xxx.227
 autossh -M 37006 -NfR 47.xxx.xxx.227:38006:localhost:36006 -p 36000 yusongli@47.xxx.xxx.227
-autossh -M 37007 -NfR 47.xxx.xxx.227:38007:localhost:36007 -p 36000 yusongli@47.xxx.xxx.227
-autossh -M 37008 -NfR 47.xxx.xxx.227:38008:localhost:36008 -p 36000 yusongli@47.xxx.xxx.227
+# NOTE: No need for 36007 and 36008, they are not used for public.
+# autossh -M 37007 -NfR 47.xxx.xxx.227:38007:localhost:36007 -p 36000 yusongli@47.xxx.xxx.227
+# autossh -M 37008 -NfR 47.xxx.xxx.227:38008:localhost:36008 -p 36000 yusongli@47.xxx.xxx.227
 
 docker compose up -d
+# Get username and password, use `cat setup.log`
+
+Disable User Registration
+Go to Identity -> Applications, select the `lobechat` and `app-built-in` application, and set `Enable signup` to false, then scroll bottom and click `Save & Exit` .
 ```
 
 ## Embedding model configuration
